@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title> About The Data </title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark custom-nav">
+  <a class="navbar-brand custom-nav" href="../index.html">Voices of #MeToo</a>
+  <img src="twitter-32.png" alt="bird">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="../about-data.html">About The Data <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="../movement.html">About The Movement</a>
+      <a class="nav-item nav-link" href="../me.html">About Me</a>
+    </div>
+  </div>
+  </nav>
+
+  <div class="container help">
+    <div class="row">
+      <h1 class="col-8 mt-5 text-uppercase header-style">The Data</h1>
+      <div class="col-6">
+      <div class="deco"></div>
+        <div class="about">
+          It all started with <a class="url-decos" href="https://data.world/balexturner/390-000-metoo-tweets">this dataset</a> from Data World from Bret Turner.
+          <br><br>
+          <h6 class="sub-head text-uppercase"> Step 1: Data Exploration. </h6>
+            <ul> Find out what information the data had </ul>
+            <ul> Were there any obvious trends? </ul>
+            <p> While there weren't any obvious trends, the data was clearly telling two very important stories. Firstly, Alyssa Milano tweeted about #MeToo in October of 2017, yet by December, there was no seeming slowdown to the conversation. People were still finding ways to talk about me too, either through their own stories, or by retweeting others and making sure theirs don't go unheard.
+            </p>
+            <p>
+              I was therefore interested in 2 things:
+            </p>
+              <ul> What were the unique tweets being sent <p class="code"> is_retweet == false</p> </ul>
+              <ul> What did an average day's worth of conversation look like? </ul>
+
+          <h6 class="sub-head text-uppercase"> Step 2: Data Cleaning. </h6>
+          <p> With an idea of what story the data <i> might </i> be telling, I used <a class="code">R</a> to do further data exploration.
+          </p>
+          <img class="custom-img" src="graphs/by_user_number_retweets.png" alt="user retweets">
+          <img class="custom-img" src="graphs/is_retweeted.png" alt="retweets">
+          <img class="custom-img" src="graphs/reply_to_users.png" alt="replies">
+          <img class="custom-img" src="graphs/tweet_count_per_day.png" alt="tweets per day">
+          <h6 class="sub-head text-uppercase"> Step 3: Let the Real Visualizing Begin. </h6>
+          <p> My new dataset I would analyze would be a much smaller subset--for runtime purposes--contains only the tweets from December 13, 2017, the median date of the dataset, and only the unique tweets.
+            <br><a class="code">unique_tweets <- which(cleaned_data$isRetweet == TRUE)<br>cleaned_data <- cleaned_data[-unique_tweets,]</a>
+            <br><br>
+            Using this newly cleaned data set, with 11102 rows, and 4 columns including the raw text, username, and number of retweets, I began building the visualization you see on the home page.
+          </p>
+          Check out my source code or fork the <a class="url-decos" href="https://github.com/naaltman/vizmetoo">repository</a>
+        </div>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -8,7 +8,7 @@ var story=["In 2006 Tarana Burke started the me too movement, helping survivors 
 "Listen to a glimpse of the conversation from December 13, 2017."]
 var part;
 var curTime;
-
+var storyElms = [];
 
 function preload(){
   data = loadTable("data/unique_tweets.csv", "csv", "header")
@@ -17,18 +17,38 @@ function preload(){
 function setup(){
   // tweet raw text is in row 1
   print("loaded data")
-  createCanvas(windowWidth, windowHeight);
+  var myCanvas = createCanvas(windowWidth, windowHeight);
+  console.log(typeof(myCanvas))
+  myCanvas.parent('myContainer')
   tweets = new Tweets();
   part = 0
+  isDisplayed = false
+
+}
+
+function Story(element, x, y){
+  element.position(x,y)
+
+  this.placement = function(){
+    x += random(0, windowWidth)
+    y += random(0,windowHeight)
+    element.position(x,y)
+  }
 }
 
 function draw(){
   curTime = millis()
   if(part < 4){
-    textAlign(CENTER)
-    text(story[part], windowWidth/2, windowHeight/2)
+    if(isDisplayed==false){
+      textAlign(CENTER)
+      textStyle(BOLD)
+      textSize(15)
+      text(story[part], (windowWidth/2)-100, windowHeight/2)
+      isDisplayed=true
+    }
     if(ceil(curTime % 200) == 1){
       print("here")
+      isDisplayed = false
       clear()
       part +=1
     }
@@ -38,13 +58,14 @@ function draw(){
 }
 
 function Tweets(){
-  this.x = windowWidth/3
+  this.x = windowWidth/2
   this.y = windowHeight/2
   this.curTweet = 0
   this.showedTweet = false
 
   this.showTweet = function(){
-    tweet = text(data.getString(this.curTweet, 1), this.x, this.y)
+    toPrint = data.getString(this.curTweet, 1) + " @" + data.getString(this.curTweet, 2)
+    tweet = text(toPrint, this.x, this.y, windowWidth/4, windowHeight/4)
     this.x = random(windowWidth-180)
     this.y = random(windowHeight)
   }
@@ -52,13 +73,23 @@ function Tweets(){
   this.display = function(){
     startTime = millis()
     // have tweets show slowly at first & then speed up
-    if(ceil(startTime % 60) == 1){
-        this.showTweet()
-    } else{
-      if(ceil(startTime % 20) == 1){
-        this.showTweet()
-      }
+    if(this.curTweet == 0){
+      toPrint = data.getString(this.curTweet, 1) + " @" + data.getString(this.curTweet,2)
+      textSize(15)
+      textStyle(BOLD)
+      text(toPrint, (windowWidth/2) - 250, (windowHeight/2) - 80, windowWidth/4, windowHeight/4)
+      this.curTweet +=1
     }
-    this.curTweet +=1
+    else{
+      if(ceil(startTime % 80) == 1){
+          this.showTweet()
+      } else{
+        if(ceil(startTime % 40) == 1){
+          this.showTweet()
+        }
+      }
+      this.curTweet +=1
+    }
   }
+
 }

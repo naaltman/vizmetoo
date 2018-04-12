@@ -1,0 +1,84 @@
+body{
+  background-image: url("Twitter_Logo_Blue.svg");
+  background-repeat: no-repeat;
+  background-position: 98%;
+  height:100vh;
+  background-attachment: fixed;
+}
+.font-lato{
+  font-family: 'Lato', sans-serif;
+  font-weight: lighter;
+}
+.font-pantone{
+  font-family: 'Paytone One', sans-serif;
+}
+.font-open-sans{
+  font-family: 'Open-Sans', sans-serif;
+}
+.font-roboto{
+  font-family: 'Roboto', sans-serif;
+  font-weight:bold;
+}
+.h1{
+  color: #00aced;
+}
+.custom-img{
+  width: 100%;
+}
+.custom-nav{
+  background-color: #00aced;
+  font-weight:bold;
+  font-size: 14px;
+  color: #fff;
+}
+.about{
+  font-family:'Roboto', sans-serif;
+  font-size: 15px;
+  margin-left: 120px;
+  margin-top: 12px;
+  color: black;
+}
+p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+.deco{
+    border-top: 9px solid;
+    margin-top: 3px;
+    color: #0084b4;
+    width: 123px;
+    margin-left: 70px;
+}
+.header-style{
+  font-family:'Roboto', sans-serif;
+  font-weight: bold;
+  margin-left: 78px;
+}
+.url-decos{
+  border-bottom: 4px solid;
+	margin-bottom: 1px;
+  border-color: #0084b4;
+}
+a:hover{
+  text-decoration: none;
+  color: inherit;
+}
+a{
+  color: inherit;
+}
+ul:before{
+  content:"-";
+  margin-left: -35px;
+}
+.help{
+  border-color: #0084b4;
+  margin-top: 3px;
+  height: 90vh;
+}
+.code{
+  font-family: 'Inconsolata', monospace;
+}
+.sub-head{
+  font-family: 'Roboto', sans-serif;
+  font-weight:bold;
+}
