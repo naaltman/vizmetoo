@@ -11,7 +11,7 @@ var curTime;
 var storyElms = [];
 
 function preload(){
-  data = loadTable("data/unique_tweets.csv", "csv", "header")
+  data = loadTable("data/unique_tweets_with_time.csv", "csv", "header")
 }
 
 function setup(){
@@ -41,12 +41,11 @@ function draw(){
   if(part < 4){
     if(isDisplayed==false){
       textAlign(CENTER)
-      textStyle(BOLD)
-      textSize(15)
+      textSize(20)
       text(story[part], (windowWidth/2)-100, windowHeight/2)
       isDisplayed=true
     }
-    if(ceil(curTime % 200) == 1){
+    if(ceil(curTime % 173) == 1){
       print("here")
       isDisplayed = false
       clear()
@@ -64,23 +63,59 @@ function Tweets(){
   this.showedTweet = false
 
   this.showTweet = function(){
-    toPrint = data.getString(this.curTweet, 1) + " @" + data.getString(this.curTweet, 2)
-    tweet = text(toPrint, this.x, this.y, windowWidth/4, windowHeight/4)
-    this.x = random(windowWidth-180)
-    this.y = random(windowHeight)
+    // draw tweet time
+    noStroke()
+    fill("#fff")
+    rect(2,22,160,25)
+    tweet_time = data.getString(this.curTweet,2)
+    textSize(20)
+    fill("#000")
+    text(tweet_time, 3, 45)
+
+    // draw username
+    textSize(20)
+    textStyle(BOLD)
+    fill("#000000")
+    user = "@" + data.getString(this.curTweet,3) + "\n"
+    text(user,  this.x, this.y+2, windowWidth/4, windowHeight/4)
+
+    // draw tweet
+    tweet = data.getString(this.curTweet, 1)
+    textSize(15)
+    textStyle(NORMAL)
+    text(tweet, this.x, this.y+30, (windowWidth/3) , windowHeight/4)
+    this.curTweet +=1
+
+    // next tweet in random location within the frame
+    this.x = random(windowWidth/3 + 200)
+    this.y = random(windowHeight-100)
   }
 
   this.display = function(){
     startTime = millis()
     // have tweets show slowly at first & then speed up
     if(this.curTweet == 0){
-      toPrint = data.getString(this.curTweet, 1) + " @" + data.getString(this.curTweet,2)
-      textSize(15)
+      // draw tweet time
+      tweet_time = data.getString(this.curTweet,2)
+      textSize(20)
+      text(tweet_time, 3, 45)
+
+      // draw username
+      textSize(20)
       textStyle(BOLD)
-      text(toPrint, (windowWidth/2) - 250, (windowHeight/2) - 80, windowWidth/4, windowHeight/4)
+      fill("#000000")
+      user = "@" + data.getString(this.curTweet,3) + "\n"
+      text(user,  (windowWidth/3) - 118, (windowHeight/2) - 80, windowWidth/4, windowHeight/4)
+
+      // draw tweet
+      tweet = data.getString(this.curTweet, 1)
+      textSize(15)
+      textStyle(NORMAL)
+      text(tweet, (windowWidth/3) - 118, (windowHeight/2) - 50, (windowWidth/3) , windowHeight/4)
       this.curTweet +=1
     }
     else{
+      // start drawing slowly, then go faster as more load
       if(ceil(startTime % 80) == 1){
           this.showTweet()
       } else{
