@@ -67,23 +67,23 @@ function Story(element, x, y){
 }
 
 function draw(){
-  // curTime = millis()
-  // if(part < 4){
-  //   if(isDisplayed==false){
-  //     textAlign(CENTER)
-  //     textSize(20)
-  //     text(story[part], (windowWidth/2)-100, windowHeight/2)
-  //     isDisplayed=true
-  //   }
-  //   if(ceil(curTime % 173) == 1){
-  //     print("here")
-  //     isDisplayed = false
-  //     clear()
-  //     part +=1
-  //   }
-  // } else{
+  curTime = millis()
+  if(part < 4){
+    if(isDisplayed==false){
+      textAlign(CENTER)
+      textSize(20)
+      text(story[part], (windowWidth/2)-100, windowHeight/2)
+      isDisplayed=true
+    }
+    if(ceil(curTime % 173) == 1){
+      print("here")
+      isDisplayed = false
+      clear()
+      part +=1
+    }
+  } else{
     tweets.display()
-  // }
+  }
 }
 
 function Tweets(){
