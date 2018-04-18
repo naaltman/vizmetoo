@@ -18,11 +18,11 @@ var eng_voices = ['Google UK English Female']
 var shouldSpeak
 var isCleaned
 var tweetIndex
-var song
+var mySound
 
 function preload(){
   data = loadTable("data/Tweets_Without_URL.csv", "csv", "header")
-  mySound = loadSound('bcc-031814-you-can-reach-your-goals-895.mp3');
+  mySound = loadSound('song.mp3');
 }
 
 function setup(){
@@ -51,14 +51,15 @@ function setup(){
   stopButton.position(395, 76)
   stopButton.mousePressed(tweets.stopSpeaking)
   playMusic.position(530, 76)
+  playMusic.mousePressed(tweets.playMusic)
+  musicOff.mousePressed(tweets.musicOff)
   musicOff.position(630, 76)
   cleanTweets.position(733, 76)
   cleanTweets.mousePressed(tweets.clean)
-
   mySound.play()
 
-
 }
+
 
 function Story(element, x, y){
   element.position(x,y)
@@ -198,14 +199,11 @@ function Tweets(){
   }
 
   this.playMusic = function(){
-    song.play()
+    mySound.play()
   }
 
   this.musicOff = function(){
-    if(song.isPlaying()){
-      song.stop()
-    }
+    mySound.stop()
   }
-
 
 }
