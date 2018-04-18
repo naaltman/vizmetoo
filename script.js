@@ -18,9 +18,11 @@ var eng_voices = ['Google UK English Female']
 var shouldSpeak
 var isCleaned
 var tweetIndex
+var song
 
 function preload(){
   data = loadTable("data/Tweets_Without_URL.csv", "csv", "header")
+  mySound = loadSound('bcc-031814-you-can-reach-your-goals-895.mp3');
 }
 
 function setup(){
@@ -44,14 +46,16 @@ function setup(){
   musicOff.class('btn btn-light btn-style')
   cleanTweets = createButton('clean tweets')
   cleanTweets.class('btn btn-light btn-style')
-  speakButton.position(245, 76)
+  speakButton.position(265, 76)
   speakButton.mousePressed(tweets.makeSpeak)
-  stopButton.position(375, 76)
+  stopButton.position(395, 76)
   stopButton.mousePressed(tweets.stopSpeaking)
-  playMusic.position(510, 76)
-  musicOff.position(610, 76)
-  cleanTweets.position(713, 76)
+  playMusic.position(530, 76)
+  musicOff.position(630, 76)
+  cleanTweets.position(733, 76)
   cleanTweets.mousePressed(tweets.clean)
+
+  mySound.play()
 
 
 }
@@ -76,7 +80,6 @@ function draw(){
       isDisplayed=true
     }
     if(ceil(curTime % 173) == 1){
-      print("here")
       isDisplayed = false
       clear()
       part +=1
@@ -97,11 +100,11 @@ function Tweets(){
     // draw tweet time
     noStroke()
     fill("#fff")
-    rect(10,35,130,25)
+    rect(65,35,130,25)
     tweet_time = data.getString(this.curTweet,2)
     textSize(20)
     fill("#000")
-    text(tweet_time, 10, 50)
+    text(tweet_time, 65, 50)
 
     // draw username
     textSize(20)
@@ -136,7 +139,7 @@ function Tweets(){
       // draw tweet time
       tweet_time = data.getString(this.curTweet,2)
       textSize(20)
-      text(tweet_time, 10, 50)
+      text(tweet_time, 65, 50)
 
       // draw username
       textSize(20)
@@ -185,7 +188,23 @@ function Tweets(){
   }
 
   this.clean = function(){
-    tweetIndex = 1
+    // tweets without URL are at position 6
+    // raw tweets are at 1
+    if(tweetIndex == 6){
+      tweetIndex = 1
+    } else{
+      tweetIndex = 6
+    }
+  }
+
+  this.playMusic = function(){
+    song.play()
+  }
+
+  this.musicOff = function(){
+    if(song.isPlaying()){
+      song.stop()
+    }
   }
 
 
