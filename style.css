@@ -31,6 +31,12 @@ body{
   font-size: 14px;
   color: #fff;
 }
+.btn-style{
+  background-color: #00aced;
+  font-weight:bold;
+  font-size: 14px;
+  color: #fff;
+}
 .about{
   font-family:'Roboto', sans-serif;
   font-size: 15px;

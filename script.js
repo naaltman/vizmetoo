@@ -9,20 +9,50 @@ var story=["In 2006 Tarana Burke started the me too movement, helping survivors 
 var part;
 var curTime;
 var storyElms = [];
+var speaker = new p5.Speech();
+var voices = ['Google US English', 'Google UK English Female', 'Alice',
+'Amelie', 'Anna', 'Ellen', 'Fiona', 'Ioana', 'Joana', 'Karen', 'Laura', 'Luciana',
+'Mei-Jia', 'Melina', 'Milena', 'Moira', 'Monica', 'Nora', 'Paulina', 'Samantha',
+'Sara', 'Tessa', 'Victoria', 'Zosia', 'Zuzana']
+var eng_voices = ['Google UK English Female']
+var shouldSpeak
+var isCleaned
+var tweetIndex
 
 function preload(){
-  data = loadTable("data/unique_tweets_with_time.csv", "csv", "header")
+  data = loadTable("data/Tweets_Without_URL.csv", "csv", "header")
 }
 
 function setup(){
   // tweet raw text is in row 1
   print("loaded data")
   var myCanvas = createCanvas(windowWidth, windowHeight);
-  console.log(typeof(myCanvas))
   myCanvas.parent('myContainer')
-  tweets = new Tweets();
+  tweets = new Tweets()
   part = 0
   isDisplayed = false
+  shouldSpeak = false
+  isCleaned = true
+  tweetIndex = 6
+  speakButton = createButton('speak tweets')
+  speakButton.class('btn btn-light btn-style')
+  stopButton = createButton('stop speaking')
+  stopButton.class('btn btn-light btn-style')
+  playMusic = createButton('music on')
+  playMusic.class('btn btn-light btn-style')
+  musicOff = createButton('music off')
+  musicOff.class('btn btn-light btn-style')
+  cleanTweets = createButton('clean tweets')
+  cleanTweets.class('btn btn-light btn-style')
+  speakButton.position(245, 76)
+  speakButton.mousePressed(tweets.makeSpeak)
+  stopButton.position(375, 76)
+  stopButton.mousePressed(tweets.stopSpeaking)
+  playMusic.position(510, 76)
+  musicOff.position(610, 76)
+  cleanTweets.position(713, 76)
+  cleanTweets.mousePressed(tweets.clean)
+
 
 }
 
@@ -37,23 +67,23 @@ function Story(element, x, y){
 }
 
 function draw(){
-  curTime = millis()
-  if(part < 4){
-    if(isDisplayed==false){
-      textAlign(CENTER)
-      textSize(20)
-      text(story[part], (windowWidth/2)-100, windowHeight/2)
-      isDisplayed=true
-    }
-    if(ceil(curTime % 173) == 1){
-      print("here")
-      isDisplayed = false
-      clear()
-      part +=1
-    }
-  } else{
+  // curTime = millis()
+  // if(part < 4){
+  //   if(isDisplayed==false){
+  //     textAlign(CENTER)
+  //     textSize(20)
+  //     text(story[part], (windowWidth/2)-100, windowHeight/2)
+  //     isDisplayed=true
+  //   }
+  //   if(ceil(curTime % 173) == 1){
+  //     print("here")
+  //     isDisplayed = false
+  //     clear()
+  //     part +=1
+  //   }
+  // } else{
     tweets.display()
-  }
+  // }
 }
 
 function Tweets(){
@@ -61,16 +91,17 @@ function Tweets(){
   this.y = windowHeight/2
   this.curTweet = 0
   this.showedTweet = false
+  this.tweetIndex = 1
 
   this.showTweet = function(){
     // draw tweet time
     noStroke()
     fill("#fff")
-    rect(2,22,160,25)
+    rect(10,35,130,25)
     tweet_time = data.getString(this.curTweet,2)
     textSize(20)
     fill("#000")
-    text(tweet_time, 3, 45)
+    text(tweet_time, 10, 50)
 
     // draw username
     textSize(20)
@@ -80,10 +111,17 @@ function Tweets(){
     text(user,  this.x, this.y+2, windowWidth/4, windowHeight/4)
 
     // draw tweet
-    tweet = data.getString(this.curTweet, 1)
+    tweet = data.getString(this.curTweet, tweetIndex)
     textSize(15)
     textStyle(NORMAL)
     text(tweet, this.x, this.y+30, (windowWidth/3) , windowHeight/4)
+
+    if(shouldSpeak == true){
+      var rand = ceil(random(0,eng_voices.length-1))
+      speaker.setVoice(eng_voices[rand])
+      speaker.speak(tweet)
+    }
+
     this.curTweet +=1
 
     // next tweet in random location within the frame
@@ -98,7 +136,7 @@ function Tweets(){
       // draw tweet time
       tweet_time = data.getString(this.curTweet,2)
       textSize(20)
-      text(tweet_time, 3, 45)
+      text(tweet_time, 10, 50)
 
       // draw username
       textSize(20)
@@ -108,23 +146,47 @@ function Tweets(){
       text(user,  (windowWidth/3) - 118, (windowHeight/2) - 80, windowWidth/4, windowHeight/4)
 
       // draw tweet
-      tweet = data.getString(this.curTweet, 1)
+      tweet = data.getString(this.curTweet, tweetIndex)
+
+      // speak tweet in female voice
+      if(shouldSpeak == true){
+        var rand = ceil(random(0,eng_voices.length-1))
+        speaker.setVoice(eng_voices[rand])
+        speaker.speak(tweet)
+      }
+
       textSize(15)
       textStyle(NORMAL)
       text(tweet, (windowWidth/3) - 118, (windowHeight/2) - 50, (windowWidth/3) , windowHeight/4)
       this.curTweet +=1
+
     }
     else{
-      // start drawing slowly, then go faster as more load
-      if(ceil(startTime % 80) == 1){
+    //   // start drawing slowly, then go faster as more load
+      if(ceil(startTime % 93) == 1){
           this.showTweet()
       } else{
-        if(ceil(startTime % 40) == 1){
+        if(ceil(startTime % 52) == 1){
           this.showTweet()
         }
       }
-      this.curTweet +=1
+      if(this.curTweet > data.length){
+        this.curTweet = 0
+      }
     }
   }
+
+  this.makeSpeak = function(){
+    shouldSpeak = true
+  }
+
+  this.stopSpeaking = function(){
+    shouldSpeak = false
+  }
+
+  this.clean = function(){
+    tweetIndex = 1
+  }
+
 
 }
